@@ -1,0 +1,26 @@
+name: Reusable
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      env_name:
+        required: false
+        default: dev
+        type: string
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/greet
+        id: greet
+        with:
+          name: ${{ inputs.name }}
+          env_name: ${{ inputs.env_name }}
+
+      - run: echo "${{ steps.greet.outputs.greeting }}"
