@@ -25,3 +25,15 @@ jobs:
     steps:
       - run: echo "Workflow inputs configured successfully"
       
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      build_tag: ${{ steps.build_info.outputs.build_tag }}
+      build_date: ${{ steps.build_info.outputs.build_date }}
+
+    steps:
+      - name: Create build information
+        id: build_info
+        run: |
+          echo "build_tag=v${{ inputs.version }}-${{ inputs.release_type }}-${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          echo "build_date=$(date +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
