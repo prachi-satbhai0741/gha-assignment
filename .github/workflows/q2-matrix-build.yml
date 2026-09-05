@@ -1,4 +1,4 @@
-name: Matrix Build
+name: Q2 Matrix Build
 
 on:
   push:
@@ -11,6 +11,8 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
 
+    timeout-minutes: 10
+
     strategy:
       fail-fast: false
       matrix:
@@ -21,3 +23,9 @@ jobs:
         exclude:
           - os: ubuntu-22.04
             node: 18
+
+    steps:
+      - name: Check matrix configuration
+        run: |
+          echo "OS: ${{ matrix.os }}"
+          echo "Node: ${{ matrix.node }}"
