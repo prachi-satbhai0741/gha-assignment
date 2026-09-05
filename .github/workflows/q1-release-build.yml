@@ -24,3 +24,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Workflow inputs configured successfully"
+      
