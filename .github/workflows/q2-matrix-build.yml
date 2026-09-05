@@ -1,4 +1,4 @@
-name: Q2 Matrix Build
+name: Matrix Build
 
 on:
   push:
@@ -19,13 +19,34 @@ jobs:
         os:
           - ubuntu-latest
           - ubuntu-22.04
-        node: [18,20]
+        node: [18, 20]
         exclude:
           - os: ubuntu-22.04
             node: 18
 
     steps:
-      - name: Check matrix configuration
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Print Node and npm versions
         run: |
-          echo "OS: ${{ matrix.os }}"
-          echo "Node: ${{ matrix.node }}"
+          node --version
+          npm --version
+
+      - name: Create report
+        run: |
+          mkdir -p out
+          echo "Runner OS: ${{ matrix.os }}" > out/report-${{ matrix.os }}-${{ matrix.node }}.txt
+          echo "Node version: ${{ matrix.node }}" >> out/report-${{ matrix.os }}-${{ matrix.node }}.txt
+          echo "Run number: ${{ github.run_number }}" >> out/report-${{ matrix.os }}-${{ matrix.node }}.txt
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-${{ matrix.os }}-${{ matrix.node }}
+          path: out/report-${{ matrix.os }}-${{ matrix.node }}.txt
