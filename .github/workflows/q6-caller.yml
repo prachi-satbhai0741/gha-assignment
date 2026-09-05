@@ -1,0 +1,11 @@
+name: Caller
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-reusable:
+    uses: ./.github/workflows/q6-reusable.yml
+    with:
+      name: Prachi
+      env_name: dev
